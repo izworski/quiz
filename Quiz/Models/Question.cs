@@ -12,7 +12,7 @@ namespace Quiz.Models
 
         public Category Category { get; set; }
         
-        //public User CreatedBy { get; set; }
+        public User CreatedBy { get; set; }
 
         [Required]
         public QuestionDifficulty Difficulty { get; set; }
@@ -27,12 +27,16 @@ namespace Quiz.Models
         [Required]
         public DateTime CreatedAt { get; set; }
 
-        //[Required]
-        //public bool IsActive { get; set; }
+        [Required]
+        public bool IsActive { get; set; }
 
         [Required]
         [Range(0, 300)]
         public int MaxSecondsToComplete { get; set; }
+
+        public virtual ICollection<Answer> Answers { get; set; }
+
+        public virtual ICollection<QuestionResponse> QuestionResponses { get; set; }
     }
 
     public enum QuestionDifficulty

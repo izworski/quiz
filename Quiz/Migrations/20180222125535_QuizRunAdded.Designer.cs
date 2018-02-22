@@ -11,8 +11,8 @@ using System;
 namespace Quiz.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180221213922_QuestionClassUpdated8thTime")]
-    partial class QuestionClassUpdated8thTime
+    [Migration("20180222125535_QuizRunAdded")]
+    partial class QuizRunAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -80,6 +80,22 @@ namespace Quiz.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("Quiz.Models.QuizRun", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ParticipantId");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("QuizRuns");
+                });
+
             modelBuilder.Entity("Quiz.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -97,6 +113,10 @@ namespace Quiz.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
                     b.Property<DateTime>("RegistrationDate");
 
                     b.HasKey("Id");
@@ -108,7 +128,8 @@ namespace Quiz.Migrations
                 {
                     b.HasOne("Quiz.Models.User", "CreatedBy")
                         .WithMany("CreatedCategories")
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Quiz.Models.Category", "Parent")
                         .WithMany("Children")
@@ -119,11 +140,20 @@ namespace Quiz.Migrations
                 {
                     b.HasOne("Quiz.Models.Category", "Category")
                         .WithMany("Questions")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Quiz.Models.User", "CreatedBy")
                         .WithMany("CreatedQuestions")
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Quiz.Models.QuizRun", b =>
+                {
+                    b.HasOne("Quiz.Models.User", "Participant")
+                        .WithMany("QuizRuns")
+                        .HasForeignKey("ParticipantId");
                 });
 #pragma warning restore 612, 618
         }

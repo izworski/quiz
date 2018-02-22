@@ -11,8 +11,8 @@ using System;
 namespace Quiz.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180221195116_QuestionClassAdded")]
-    partial class QuestionClassAdded
+    [Migration("20180222120634_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,7 @@ namespace Quiz.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<int>("CreatedById");
+                    b.Property<int?>("CreatedById");
 
                     b.Property<bool>("IsActive");
 
@@ -52,18 +52,16 @@ namespace Quiz.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CategoryId");
+                    b.Property<int?>("CategoryId");
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<int>("CreatedById");
+                    b.Property<int?>("CreatedById");
 
                     b.Property<string>("Description")
                         .IsRequired();
 
                     b.Property<int>("Difficulty");
-
-                    b.Property<bool>("IsActive");
 
                     b.Property<int>("MaxSecondsToComplete");
 
@@ -97,6 +95,10 @@ namespace Quiz.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
                     b.Property<DateTime>("RegistrationDate");
 
                     b.HasKey("Id");
@@ -109,7 +111,7 @@ namespace Quiz.Migrations
                     b.HasOne("Quiz.Models.User", "CreatedBy")
                         .WithMany("CreatedCategories")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Quiz.Models.Category", "Parent")
                         .WithMany("Children")
@@ -121,12 +123,11 @@ namespace Quiz.Migrations
                     b.HasOne("Quiz.Models.Category", "Category")
                         .WithMany("Questions")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Quiz.Models.User", "CreatedBy")
                         .WithMany("CreatedQuestions")
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CreatedById");
                 });
 #pragma warning restore 612, 618
         }

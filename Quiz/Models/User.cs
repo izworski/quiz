@@ -28,7 +28,9 @@ namespace Quiz.Models
         public AccessLevel AccessLevel { get; set; }
 
         public virtual ICollection<Category> CreatedCategories { get; set; }
-        //public virtual ICollection<Question> CreatedQuestions { get; set; }
+        public virtual ICollection<Question> CreatedQuestions { get; set; }
+        public virtual ICollection<QuizRun> QuizRuns { get; set; }
+        public virtual ICollection<Answer> CreatedAnswers { get; set; }
 
         [Required]
         public DateTime RegistrationDate { get; set; }
