@@ -18,7 +18,7 @@ namespace Quiz.Models
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<QuizRun> QuizRuns { get; set; }
-    
+        public DbSet<Audit> Audits { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
